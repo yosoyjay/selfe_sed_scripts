@@ -1,0 +1,22 @@
+#!/bin/bash
+#SBATCH -J profiles_extract_year
+#SBATCH -o profiles_extract_year.log
+#SBATCH -N 4 -n 64
+#SBATCH -p normal 
+#SBATCH -t 14:00:00
+#SBATCH --mail-user=lopezj@stccmop.org
+#SBATCH --mail-type=begin
+#SBATCH --mail-type=end
+#SBATCH -A TG-OCE140024 
+
+run_tag=s2012_run07
+
+# Profiles
+st=2012-01-01
+et=2012-12-31
+time extractStation -d combined -C -t channel.csv -s $st -e $et -v salt -p -r $run_tag -n &
+time extractStation -d combined -C -t channel.csv -s $st -e $et -v turbidity -p -r $run_tag -n &
+time extractStation -d combined -C -t channel.csv -s $st -e $et -v hvel -p -r $run_tag -n &
+time extractStation -d combined -C -t channel.csv -s $st -e $et -v tdff -p -r $run_tag -n &
+
+wait

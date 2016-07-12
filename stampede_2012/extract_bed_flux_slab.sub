@@ -1,0 +1,18 @@
+#!/bin/bash
+#SBATCH -J bf_slabs 
+#SBATCH -o bf_slabs.log
+#SBATCH -N 3 -n 48 
+#SBATCH -p development 
+#SBATCH -t 02:00:00
+#SBATCH --mail-user=lopezj@stccmop.org
+#SBATCH --mail-type=begin
+#SBATCH --mail-type=end
+#SBATCH -A TG-OCE140024 
+
+run_tag=s2012_run07
+
+time extractSlab -r $run_tag -d combined -C -s 2012-02-01 -e 2012-03-01 -v bed_flux -k 1 --decimals=6 &
+time extractSlab -r $run_tag -d combined -C -s 2012-05-01 -e 2012-06-01 -v bed_flux -k 1 --decimals=6 &
+time extractSlab -r $run_tag -d combined -C -s 2012-09-01 -e 2012-10-01 -v bed_flux -k 1 --decimals=6 &
+
+wait

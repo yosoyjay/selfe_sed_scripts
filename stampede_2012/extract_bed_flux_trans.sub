@@ -1,0 +1,48 @@
+#!/bin/bash
+#SBATCH -J transect_bedflux
+#SBATCH -o transect_bedflux.log
+#SBATCH -N 2 -n 32 
+#SBATCH -p normal 
+#SBATCH -t 5:00:00
+#SBATCH --mail-user=lopezj@stccmop.org
+#SBATCH --mail-type=begin
+#SBATCH --mail-type=end
+#SBATCH -A TG-OCE140024 
+
+run_tag=s2012_run07
+
+st=2012-02-01
+et=2012-03-01
+# Transects
+ibrun -n 1 -o 0 extractTransect -r $run_tag -v bed_flux -s $st -e $et -n sChann -d combined -t schann.bp -C --decimals 6 &
+ibrun -n 1 -o 16 extractTransect -r $run_tag -v bed_flux -s $st -e $et -n nChann -d combined -t nchann.bp -C --decimals 6 &
+wait 
+ibrun -n 1 -o 0 python make_lpf_instantaneous_dc.py $st $et $run_tag sChann transect &
+ibrun -n 1 -o 16 python make_lpf_instantaneous_dc.py $st $et $run_tag nChann transect &
+wait 
+
+st=2012-05-01
+et=2012-06-01
+# Transects
+ibrun -n 1 -o 0 extractTransect -r $run_tag -v bed_flux -s $st -e $et -n sChann -d combined -t schann.bp -C --decimals 6 &
+ibrun -n 1 -o 16 extractTransect -r $run_tag -v bed_flux -s $st -e $et -n nChann -d combined -t nchann.bp -C --decimals 6 &
+wait 
+ibrun -n 1 -o 0 python make_lpf_instantaneous_dc.py $st $et $run_tag sChann transect &
+ibrun -n 1 -o 16 python make_lpf_instantaneous_dc.py $st $et $run_tag nChann transect &
+wait 
+
+st=2012-09-01
+et=2012-10-01
+# Transects
+ibrun -n 1 -o 0 extractTransect -r $run_tag -v bed_flux -s $st -e $et -n sChann -d combined -t schann.bp -C --decimals 6 &
+ibrun -n 1 -o 16 extractTransect -r $run_tag -v bed_flux -s $st -e $et -n nChann -d combined -t nchann.bp -C --decimals 6 &
+wait 
+ibrun -n 1 -o 0 python make_lpf_instantaneous_dc.py $st $et $run_tag sChann transect &
+ibrun -n 1 -o 16 python make_lpf_instantaneous_dc.py $st $et $run_tag nChann transect &
+wait 
+
+
+mkdir -p lpf/data/transect
+mkdir -p inst/data/transect
+mv $run_tag/data/transect/*lpf* lpf/data/transect
+mv $run_tag/data/transect/*inst* inst/data/transect

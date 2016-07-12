@@ -1,0 +1,23 @@
+#!/bin/bash
+#SBATCH -J sat01_extract
+#SBATCH -o sat01_extract.log
+#SBATCH -N 4 -n 64
+#SBATCH -p normal 
+#SBATCH -t 12:00:00
+#SBATCH --mail-user=lopezj@stccmop.org
+#SBATCH --mail-type=begin
+#SBATCH --mail-type=end
+#SBATCH -A TG-OCE140024 
+
+run_tag=s2012_run07
+station=saturn01_stations.csv
+
+st=2012-01-01
+et=2012-12-31
+
+time extractStation -d combined -C -t $station -s $st -e $et -v salt  -r $run_tag -n &
+time extractStation -d combined -C -t $station -s $st -e $et -v hvel  -r $run_tag -n &
+time extractStation -d combined -C -t $station -s $st -e $et -v tdff  -r $run_tag -n &
+time extractStation -d combined -C -t $station -s $st -e $et -v temp  -r $run_tag -n &
+
+wait
