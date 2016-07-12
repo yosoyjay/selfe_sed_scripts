@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH -J skill 
+#SBATCH -o skill.log
+#SBATCH -N 1 -n 16
+#SBATCH -p normal 
+#SBATCH -t 48:00:00
+#SBATCH --mail-user=lopezj@stccmop.org
+#SBATCH --mail-type=begin
+#SBATCH --mail-type=end
+#SBATCH -A TG-OCE140024 
+
+run_tag=s2012_run07
+
+# Skill  
+time skillExtract -t ~/share/stations/real_stations.csv -r $run_tag -s 2012-01-01 -e 2013-01-01 -d combined -C --no-profiles -C -T sed -n 4 

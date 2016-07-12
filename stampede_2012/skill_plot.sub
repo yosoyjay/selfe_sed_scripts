@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH -J skill_plot 
+#SBATCH -o skill_plot.log
+#SBATCH -N 1 -n 1
+#SBATCH -p serial
+#SBATCH -t 03:00:00
+#SBATCH --mail-user=lopezj@stccmop.org
+#SBATCH --mail-type=begin
+#SBATCH --mail-type=end
+#SBATCH -A TG-OCE140024 
+
+run_tag=s2012_run07
+end_year=2012
+# Skill  
+for i in {1..12}
+do
+  j=$((i+1))
+  if [[ "$j" == 13 ]]; 
+  then
+    j=1
+    end_year=2013
+  fi
+  time skillPlot -s 2012-$i-01 -e $end_year-$j-01 -o skill_plots -t ~/share/stations/real_stations.csv --no-profiles -T sed -n 4 $run_tag 
+done
